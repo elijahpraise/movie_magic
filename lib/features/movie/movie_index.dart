@@ -1,0 +1,14 @@
+export 'data/models/genre_model.dart';
+export 'data/models/movie_detail_model.dart';
+export 'data/models/movie_model.dart';
+export 'data/models/paginated_result_model.dart';
+export 'data/models/production_company_model.dart';
+export 'data/remote/dto/discover_movie_params.dart';
+export 'data/remote/dto/trending_movie_params.dart';
+export 'data/remote/movie_repository.dart';
+export 'data/remote/movie_service.dart';
+export 'data/use_case/movie_use_cases.dart';
+export 'presentation/extensions/home_tab_extension.dart';
+export 'presentation/widgets/discover_movie_builder.dart';
+export 'presentation/widgets/movie_card.dart';
+export 'presentation/widgets/trending_movie_builder.dart';

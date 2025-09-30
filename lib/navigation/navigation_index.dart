@@ -1,0 +1,11 @@
+export '../features/main_app/presentation/screens/main_app_screen_index.dart';
+export '../features/movie/presentation/screens/movie_screen_index.dart';
+export '../features/onboarding/presentation/screens/onboarding_screen_index.dart';
+export 'helpers/func.dart';
+export 'helpers/navigation_extension.dart';
+export 'models/route_model.dart';
+export 'router.dart';
+export 'routes.dart';
+export 'routes/home_routes.dart';
+export 'routes/search_routes.dart';
+export 'routes/watchlist_routes.dart';
