@@ -9,4 +9,6 @@ class AppRoutes {
   static const search = Route(path: '/search', name: 'search');
 
   static const watchlist = Route(path: '/watchlist', name: 'watchlist');
+
+  static const detail = Route(path: 'detail', name: 'detail');
 }
