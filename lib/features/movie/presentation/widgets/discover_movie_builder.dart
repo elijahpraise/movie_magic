@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:movie_magic/app/app_index.dart';
+import 'package:movie_magic/core/core.dart';
 import 'package:movie_magic/features/movie/movie_index.dart';
+import 'package:movie_magic/features/movie/presentation/controllers/movie_controller_index.dart';
 import 'package:movie_magic/features/pagination/pagination_index.dart';
 import 'package:movie_magic/features/shared/shared_index.dart';
+import 'package:movie_magic/navigation/navigation_index.dart';
 
 class DiscoverMovieBuilder extends StatelessWidget {
   const DiscoverMovieBuilder({super.key, required this.i, this.loadCallback});
@@ -22,6 +24,10 @@ class DiscoverMovieBuilder extends StatelessWidget {
       itemBuilder: (movie) {
         return MovieCard(
           title: movie.title,
+          onTap: () {
+            context.read<MovieCubit>().setMovie(movie);
+            context.pushNamed(AppRoutes.detail.name);
+          },
           posterUrl: movie.generatePosterUrl(),
           rating: movie.voteAverage ?? 0,
           releaseDate: movie.releaseDate.split("-").first,
@@ -35,4 +41,6 @@ extension MovieUrlStringExt on Movie {
   String generatePosterUrl() {
     return 'https://image.tmdb.org/t/p/original/$posterPath.png';
   }
+
+  String get releaseYear => releaseDate.split("-").first;
 }

@@ -6,8 +6,8 @@ import 'package:movie_magic/features/pagination/pagination_index.dart';
 import 'package:movie_magic/features/shared/shared_index.dart';
 import 'package:movie_magic/navigation/navigation_index.dart';
 
-class TrendingMovieBuilder extends StatelessWidget {
-  const TrendingMovieBuilder({super.key, required this.i, this.loadCallback});
+class TopRatedMovieBuilder extends StatelessWidget {
+  const TopRatedMovieBuilder({super.key, required this.i, this.loadCallback});
   final PaginatedResult<Movie> i;
   final VoidCallback? loadCallback;
 
@@ -17,8 +17,8 @@ class TrendingMovieBuilder extends StatelessWidget {
       return InfoDisplay(title: 'Nothing here yet', lottie: Assets.movie);
     }
     return PaginatedBuilder(
-      useCase: trendingMovieUseCase,
-      params: (i) => TrendingMovieParams(page: i),
+      useCase: topRatedMovieUseCase,
+      params: (i) => TopRatedMovieParams(page: i),
       totalPages: i.totalPages,
       items: i.results,
       itemBuilder: (movie) {

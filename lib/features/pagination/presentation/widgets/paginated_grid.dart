@@ -36,7 +36,7 @@ class PaginatedGrid<T> extends HookWidget {
             }
             return itemBuilder(items[index]);
           },
-          itemCount: items.length + 10,
+          itemCount: items.length + 1,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             childAspectRatio: 0.75,

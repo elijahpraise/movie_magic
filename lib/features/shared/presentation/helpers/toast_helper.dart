@@ -34,7 +34,7 @@ class ToastHelper {
       dismissOtherToast: true,
       position:
           position ??
-          const ToastPosition(align: Alignment.bottomCenter, offset: -8),
+          const ToastPosition(align: Alignment.topCenter, offset: 32),
     );
   }
 }

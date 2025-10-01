@@ -23,9 +23,9 @@ class ToastV1 extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: switch (toastType) {
-            ToastType.info => context.theme.snackBarTheme.backgroundColor,
+            ToastType.info => Colors.black,
             ToastType.error => context.theme.colorScheme.error,
-            ToastType.success => context.theme.colorScheme.primary,
+            ToastType.success => context.theme.colorScheme.tertiary,
           },
         ),
         child: PaddedRow(
@@ -46,7 +46,7 @@ class ToastV1 extends StatelessWidget {
                 content ?? '',
                 style:
                     contentStyle ??
-                    context.textTheme.bodySmall?.copyWith(color: Colors.white),
+                    context.textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
             ),
           ],

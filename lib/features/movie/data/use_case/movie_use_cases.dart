@@ -38,6 +38,17 @@ class MovieDetailUseCase extends UseCase<MovieDetail, String> {
   }
 }
 
+/* Movie Trailer Use Case */
+final movieTrailerUseCase = MovieTrailerUseCase();
+
+class MovieTrailerUseCase extends UseCase<List<MovieTrailer>, String> {
+  @override
+  Future<Either<List<MovieTrailer>, ErrorResponse>> call(String params) async {
+    final res = await movieRepository.getMovieTrailer(params);
+    return res.fold(Left.new, Right.new);
+  }
+}
+
 /* Trending Movie Use Case */
 final trendingMovieUseCase = TrendingMovieUseCase();
 
@@ -48,6 +59,20 @@ class TrendingMovieUseCase
     TrendingMovieParams params,
   ) async {
     final res = await movieRepository.getTrendingMovies(params);
+    return res.fold(Left.new, Right.new);
+  }
+}
+
+/* Top Rated Movie Use Case */
+final topRatedMovieUseCase = TopRatedMovieUseCase();
+
+class TopRatedMovieUseCase
+    extends UseCase<PaginatedResult<Movie>, TopRatedMovieParams> {
+  @override
+  Future<Either<PaginatedResult<Movie>, ErrorResponse>> call(
+    TopRatedMovieParams params,
+  ) async {
+    final res = await movieRepository.getTopRatedMovies(params);
     return res.fold(Left.new, Right.new);
   }
 }

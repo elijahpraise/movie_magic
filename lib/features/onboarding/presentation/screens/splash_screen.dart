@@ -21,7 +21,10 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<MovieGenreBloc>().add(FetchMovieGenres());
+      final genres = context.read<MovieGenreCubit>().state;
+      if (genres.isEmpty) {
+        context.read<MovieGenreBloc>().add(FetchMovieGenres());
+      }
       Timer(const Duration(seconds: 2), _load);
     });
   }

@@ -12,6 +12,10 @@ abstract class MovieServiceInterface {
 
   Future<Response<dynamic>> getMovieGenres();
 
+  Future<Response<dynamic>> getMovieTrailer(String id);
+
+  Future<Response<dynamic>> getTopRatedMovies();
+
   Future<Response<dynamic>> getTrendingMovies();
 }
 
@@ -46,6 +50,26 @@ class MovieService implements MovieServiceInterface {
   Future<Response> getMovieGenres({Json? queryParams}) async {
     final response = await apiClient.get(
       'genre/movie/list',
+      queryParams: queryParams,
+      reqToken: true,
+    );
+    return response;
+  }
+
+  @override
+  Future<Response> getMovieTrailer(String id, {Json? queryParams}) async {
+    final response = await apiClient.get(
+      'movie/$id/videos',
+      queryParams: queryParams,
+      reqToken: true,
+    );
+    return response;
+  }
+
+  @override
+  Future<Response> getTopRatedMovies({Json? queryParams}) async {
+    final response = await apiClient.get(
+      'movie/top_rated',
       queryParams: queryParams,
       reqToken: true,
     );

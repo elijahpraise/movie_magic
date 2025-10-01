@@ -6,5 +6,12 @@ final homeRoutes = <RouteBase>[
     path: AppRoutes.home.path,
     name: AppRoutes.home.name,
     builder: (context, state) => const HomeScreen(),
+    routes: [
+      GoRoute(
+        path: AppRoutes.detail.path,
+        name: AppRoutes.detail.name,
+        builder: (context, state) => MovieDetailScreen(),
+      ),
+    ],
   ),
 ];

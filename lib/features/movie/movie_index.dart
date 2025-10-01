@@ -1,9 +1,11 @@
 export 'data/models/genre_model.dart';
 export 'data/models/movie_detail_model.dart';
 export 'data/models/movie_model.dart';
+export 'data/models/movie_trailer_model.dart';
 export 'data/models/paginated_result_model.dart';
 export 'data/models/production_company_model.dart';
 export 'data/remote/dto/discover_movie_params.dart';
+export 'data/remote/dto/top_rated_movie_params.dart';
 export 'data/remote/dto/trending_movie_params.dart';
 export 'data/remote/movie_repository.dart';
 export 'data/remote/movie_service.dart';
