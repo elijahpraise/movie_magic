@@ -23,6 +23,10 @@ abstract class MovieRepositoryInterface {
   Future<Either<PaginatedResult<Movie>, ErrorResponse>> getTrendingMovies(
     TrendingMovieParams params,
   );
+
+  Future<Either<PaginatedResult<Movie>, ErrorResponse>> searchForMovie(
+    SearchMovieParams params,
+  );
 }
 
 class MovieRepository implements MovieRepositoryInterface {
@@ -142,6 +146,34 @@ class MovieRepository implements MovieRepositoryInterface {
   ) async {
     try {
       final response = await movieService.getTrendingMovies(
+        queryParams: params.toJson(),
+      );
+      final json = response.data as Json;
+      final moviesResponse = json['results'] as List<dynamic>;
+      final movies =
+          moviesResponse.map((e) => Movie.fromJson(e as Json)).toList();
+      final dataResponse = PaginatedResult(
+        page: json['page'],
+        results: movies,
+        count: moviesResponse.length,
+        totalPages: json['total_pages'],
+      );
+      return Left(dataResponse);
+    } on DioException catch (e) {
+      final errorResponse = ApiError.handleError(e);
+      return Right(errorResponse);
+    } catch (e) {
+      final error = ErrorResponse(message: e.toString());
+      return Right(error);
+    }
+  }
+
+  @override
+  Future<Either<PaginatedResult<Movie>, ErrorResponse>> searchForMovie(
+    SearchMovieParams params,
+  ) async {
+    try {
+      final response = await movieService.searchForMovie(
         queryParams: params.toJson(),
       );
       final json = response.data as Json;

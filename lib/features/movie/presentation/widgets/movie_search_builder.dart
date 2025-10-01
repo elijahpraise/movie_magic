@@ -6,8 +6,9 @@ import 'package:movie_magic/features/pagination/pagination_index.dart';
 import 'package:movie_magic/features/shared/shared_index.dart';
 import 'package:movie_magic/navigation/navigation_index.dart';
 
-class DiscoverMovieBuilder extends StatelessWidget {
-  const DiscoverMovieBuilder({super.key, required this.i});
+class MovieSearchBuilder extends StatelessWidget {
+  const MovieSearchBuilder({required this.i, required this.query, super.key});
+  final String query;
   final PaginatedResult<Movie> i;
 
   @override
@@ -18,8 +19,8 @@ class DiscoverMovieBuilder extends StatelessWidget {
       );
     }
     return PaginatedBuilder(
-      useCase: discoverMovieUseCase,
-      params: (i) => DiscoverMovieParams(page: i),
+      useCase: movieSearchUseCase,
+      params: (i) => SearchMovieParams(query: query, page: i),
       totalPages: i.totalPages,
       items: i.results,
       itemBuilder: (movie) {
@@ -36,15 +37,4 @@ class DiscoverMovieBuilder extends StatelessWidget {
       },
     );
   }
-}
-
-extension MovieUrlStringExt on Movie {
-  String? generatePosterUrl() {
-    if (posterPath != null) {
-      return 'https://image.tmdb.org/t/p/original/$posterPath.png';
-    }
-    return null;
-  }
-
-  String get releaseYear => releaseDate.split("-").first;
 }

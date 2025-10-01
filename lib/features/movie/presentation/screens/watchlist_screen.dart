@@ -1,27 +1,51 @@
-import 'package:flutter/material.dart';
-import 'package:movie_magic/features/shared/presentation/widgets/screen_frame.dart';
+import 'package:movie_magic/app/app_index.dart';
+import 'package:movie_magic/core/core.dart';
+import 'package:movie_magic/features/movie/movie_index.dart';
+import 'package:movie_magic/features/movie/presentation/controllers/movie_controller_index.dart';
+import 'package:movie_magic/features/shared/shared_index.dart';
+import 'package:movie_magic/navigation/navigation_index.dart';
 
 class WatchlistScreen extends StatelessWidget {
   const WatchlistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final watchlist = context.watch<WatchlistCubit>().state;
     return ScreenFrame(
-      appBar: AppBar(title: const Text("Watchlist")),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.7,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-        ),
-        itemCount: 6,
-        itemBuilder:
-            (_, index) => Container(
-              color: Colors.deepPurple.shade200,
-              child: Center(child: Text("Saved $index")),
+      appBar: AppBar(
+        title: Text("Watchlist", style: context.textTheme.headlineSmall),
+      ),
+      body: CustomScrollView(
+        slivers: [
+          if (watchlist.isEmpty)
+            SliverHelper.buildSliverFillRemaining(
+              child: InfoDisplay(
+                lottie: Assets.movie,
+                title: 'No movies in your watchlist',
+              ),
+            )
+          else if (watchlist.isNotEmpty)
+            SliverGrid.builder(
+              itemBuilder: (context, index) {
+                final movie = watchlist[index];
+                return MovieCard(
+                  title: movie.title,
+                  onTap: () {
+                    context.read<MovieCubit>().setMovie(movie);
+                    context.pushNamed(AppRoutes.detail.name);
+                  },
+                  posterUrl: movie.generatePosterUrl(),
+                  rating: movie.voteAverage ?? 0,
+                  releaseDate: movie.releaseDate.split("-").first,
+                );
+              },
+              itemCount: watchlist.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.75,
+              ),
             ),
+        ],
       ),
     );
   }

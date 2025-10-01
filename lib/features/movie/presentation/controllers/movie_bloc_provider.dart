@@ -7,7 +7,9 @@ final movieBlocProvider = <BlocProvider>[
   BlocProvider<TopRatedMovieBloc>(create: (context) => topRatedMovieBloc),
   BlocProvider<MovieGenreBloc>(create: (context) => movieGenreBloc),
   BlocProvider<MovieDetailBloc>(create: (context) => movieDetailBloc),
+  BlocProvider<MovieSearchBloc>(create: (context) => movieSearchBloc),
   BlocProvider<MovieTrailerBloc>(create: (context) => movieTrailerBloc),
   BlocProvider<MovieCubit>(create: (context) => movieCubit),
   BlocProvider<MovieGenreCubit>(create: (context) => movieGenreCubit),
+  BlocProvider<WatchlistCubit>(create: (context) => watchlistCubit),
 ];

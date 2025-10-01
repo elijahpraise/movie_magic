@@ -29,15 +29,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
           } else if (state is DiscoverMovieError) {
             return InfoDisplay(title: 'Error occurred');
           } else if (state is DiscoverMovieLoaded) {
-            return DiscoverMovieBuilder(
-              i: state.result,
-              loadCallback: () {
-                final page = state.result.page;
-                context.read<DiscoverMovieBloc>().add(
-                  DiscoverMovies(page: page + 1),
-                );
-              },
-            );
+            return DiscoverMovieBuilder(i: state.result);
           }
           return SizedBox.shrink();
         },

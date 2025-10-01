@@ -29,15 +29,7 @@ class _TrendingTabState extends State<TrendingTab> {
           } else if (state is TrendingMovieError) {
             return InfoDisplay(title: 'Error occurred');
           } else if (state is TrendingMovieLoaded) {
-            return TrendingMovieBuilder(
-              i: state.result,
-              loadCallback: () {
-                final page = state.result.page;
-                context.read<TrendingMovieBloc>().add(
-                  FetchTrendingMovies(page: page + 1),
-                );
-              },
-            );
+            return TrendingMovieBuilder(i: state.result);
           }
           return SizedBox.shrink();
         },

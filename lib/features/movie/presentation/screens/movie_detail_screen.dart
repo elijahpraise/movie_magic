@@ -19,10 +19,10 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final id = context.read<MovieCubit>().state?.id ?? 0;
-      context.read<MovieDetailBloc>().add(FetchMovieDetails(id.toString()));
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   final id = context.read<MovieCubit>().state?.id ?? 0;
+    //   context.read<MovieDetailBloc>().add(FetchMovieDetails(id.toString()));
+    // });
   }
 
   @override
@@ -30,6 +30,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     final movie = context.read<MovieCubit>().state;
     // final movieDetail = useState<MovieDetail?>(null);
     final movieTrailerState = context.watch<MovieTrailerBloc>().state;
+    final watchlist = context.watch<WatchlistCubit>().state;
     return MultiBlocListener(
       listeners: [
         /// Movie Trailer Bloc Listener
@@ -93,12 +94,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                         const SizedBox(width: 6),
                         Text(
                           "${movie?.voteAverage?.toStringAsFixed(1)}/10  •  ${movie?.releaseDate}",
-                          style: const TextStyle(fontSize: 16),
+                          style: context.textTheme.bodyMedium,
                         ),
                       ],
                     ),
                     const Gap(16),
-                    // ✅ Genres
                     Wrap(
                       spacing: 8,
                       runSpacing: 4,
@@ -131,15 +131,43 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
 
                     const Gap(20),
-                    AppButton.icon(
-                      onPressed: () {
-                        final id = movie?.id ?? 0;
-                        context.read<MovieTrailerBloc>().add(
-                          FetchMovieTrailer(id.toString()),
-                        );
-                      },
-                      icon: const Icon(Icons.play_arrow_rounded),
-                      text: 'Watch Trailer',
+                    Wrap(
+                      spacing: 24,
+                      children: [
+                        AppButton.icon(
+                          onPressed: () {
+                            final id = movie?.id ?? 0;
+                            context.read<MovieTrailerBloc>().add(
+                              FetchMovieTrailer(id.toString()),
+                            );
+                          },
+                          icon: const Icon(Icons.play_arrow_rounded),
+                          text: 'Watch Trailer',
+                        ),
+                        Builder(
+                          builder: (context) {
+                            final inWatchlist = watchlist.contains(movie);
+                            return TextButton.icon(
+                              onPressed: () {
+                                if (movie != null) {
+                                  final cubit = context.read<WatchlistCubit>();
+                                  if (inWatchlist) {
+                                    cubit.removeWatchList(movie);
+                                  } else {
+                                    cubit.addToWatchList(movie);
+                                  }
+                                }
+                              },
+                              icon: Icon(
+                                inWatchlist
+                                    ? Icons.bookmark
+                                    : Icons.bookmark_outline,
+                              ),
+                              label: Text(inWatchlist ? 'Remove' : 'Save'),
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

@@ -50,7 +50,7 @@ TextTheme textTheme = TextTheme(
   headlineLarge: GoogleFonts.raleway(fontWeight: FontWeight.w700),
   headlineMedium: GoogleFonts.raleway(fontWeight: FontWeight.w600),
   headlineSmall: GoogleFonts.raleway(fontWeight: FontWeight.w500),
-  bodyLarge: GoogleFonts.raleway(),
-  bodyMedium: GoogleFonts.raleway(),
+  bodyLarge: GoogleFonts.poppins(),
+  bodyMedium: GoogleFonts.poppins(),
   bodySmall: GoogleFonts.nunitoSans(),
 );
