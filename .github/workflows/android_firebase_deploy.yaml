@@ -1,0 +1,96 @@
+name: "Android Build & Firebase Deploy"
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: 'Release notes for this build'
+        required: false
+        default: 'Firebase deployment'
+
+env:
+  FLUTTER_VERSION: "3.32.0"  # Latest stable version
+  JAVA_VERSION: "17"
+
+jobs:
+  # Build and deploy
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+    if: github.event_name != 'pull_request' # Only deploy on pushes and manual triggers
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create env.json file
+        run: |
+          cat << EOF > env.json
+          tmbd_base_url=${{ secrets.TMBD_BASE_URL }}
+          tmbd_access_token=${{ secrets.TMBD_ACCESS_TOKEN }}
+          tmbd_api_key=${{ secrets.TMBD_API_KEY }}
+          EOF
+          echo "✅ Created env.json file"
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: ${{ env.JAVA_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+          cache: true
+
+      - name: Generate version code
+        run: |
+          echo "flutter.versionCode=${{ github.run_number }}"
+          echo "Generated version code: ${{ github.run_number }}"
+
+      # Build APK
+      - name: Build APK
+        run: |
+          flutter build apk \
+            --build-number=${{ github.run_number }} \
+            --dart-define-from-file=env.json
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && -n "${{ github.event.inputs.release_notes }}" ]]; then
+            NOTES="${{ github.event.inputs.release_notes }}"
+          elif [[ -f ".github/workflows/dev_release_notes.txt" ]]; then
+            NOTES=$(cat .github/workflows/dev_release_notes.txt)
+          else
+            # Generate automatic release notes from recent commits
+            NOTES="🚀 Automated build from latest changes"
+            if git log --oneline -5 --pretty=format:'• %s' | head -5; then
+              NOTES="$NOTES\n\n📝 Recent changes:\n$(git log --oneline -5 --pretty=format:'• %s')"
+            fi
+          fi
+          
+          # Save multiline output
+          {
+            echo "notes<<EOF"
+            echo -e "$NOTES"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      # Deploy to Firebase App Distribution
+      - name: Deploy to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.APP_ID}}
+          serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+          groups: "internal-testers"
+          file: build/app/outputs/flutter-apk/app-release.apk
+          releaseNotes: |
+            ${{ steps.release_notes.outputs.notes }}
