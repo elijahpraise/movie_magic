@@ -4,21 +4,21 @@ import 'package:movie_magic/core/core.dart';
 class MovieCard extends StatelessWidget {
   const MovieCard({
     required this.title,
-    required this.posterUrl,
     required this.rating,
     required this.releaseDate,
     super.key,
     this.onTap,
+    this.posterUrl,
   });
   final String title;
-  final String posterUrl;
   final double rating;
   final String releaseDate;
+  final String? posterUrl;
   final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
@@ -36,19 +36,18 @@ class MovieCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           child: Stack(
             children: [
-              // Poster Image
-              Hero(
-                tag: 'movie$title$releaseDate',
-                child: CachedNetworkImage(
-                  imageUrl: posterUrl,
-                  height: double.infinity,
-                  width: double.infinity,
-                  fit: BoxFit.fill,
-                  cacheKey: 'movie$title$releaseDate',
+              if (posterUrl != null)
+                Hero(
+                  tag: 'movie$title$releaseDate',
+                  child: CachedNetworkImage(
+                    imageUrl: posterUrl!,
+                    height: double.infinity,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                    cacheKey: 'movie$title$releaseDate',
+                  ),
                 ),
-              ),
 
-              // Gradient overlay
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
@@ -62,7 +61,6 @@ class MovieCard extends StatelessWidget {
                 ),
               ),
 
-              // Info at bottom
               Positioned(
                 bottom: 8,
                 left: 8,

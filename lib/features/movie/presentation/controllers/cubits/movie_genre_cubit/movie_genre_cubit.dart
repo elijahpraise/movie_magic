@@ -17,8 +17,8 @@ class MovieGenreCubit extends Cubit<List<Genre>> with HydratedMixin {
   @override
   List<Genre>? fromJson(Map<String, dynamic> json) {
     final data = json[KeyValues.value] as List<dynamic>;
-    final therapists = data.map((e) => Genre.fromJson(e as Json)).toList();
-    return therapists;
+    final genres = data.map((e) => Genre.fromJson(e as Json)).toList();
+    return genres;
   }
 
   @override

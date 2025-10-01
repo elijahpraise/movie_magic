@@ -29,15 +29,7 @@ class _TopRatedTabState extends State<TopRatedTab> {
           } else if (state is TopRatedMovieError) {
             return InfoDisplay(title: 'Error occurred');
           } else if (state is TopRatedMovieLoaded) {
-            return TrendingMovieBuilder(
-              i: state.result,
-              loadCallback: () {
-                final page = state.result.page;
-                context.read<TopRatedMovieBloc>().add(
-                  FetchTopRatedMovies(page: page + 1),
-                );
-              },
-            );
+            return TrendingMovieBuilder(i: state.result);
           }
           return SizedBox.shrink();
         },

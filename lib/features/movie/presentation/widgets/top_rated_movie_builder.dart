@@ -7,14 +7,15 @@ import 'package:movie_magic/features/shared/shared_index.dart';
 import 'package:movie_magic/navigation/navigation_index.dart';
 
 class TopRatedMovieBuilder extends StatelessWidget {
-  const TopRatedMovieBuilder({super.key, required this.i, this.loadCallback});
+  const TopRatedMovieBuilder({super.key, required this.i});
   final PaginatedResult<Movie> i;
-  final VoidCallback? loadCallback;
 
   @override
   Widget build(BuildContext context) {
     if (i.results.isEmpty) {
-      return InfoDisplay(title: 'Nothing here yet', lottie: Assets.movie);
+      return SliverHelper.buildCustomScrollWidget(
+        child: InfoDisplay(title: 'Nothing here yet', lottie: Assets.movie),
+      );
     }
     return PaginatedBuilder(
       useCase: topRatedMovieUseCase,

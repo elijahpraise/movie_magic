@@ -76,3 +76,17 @@ class TopRatedMovieUseCase
     return res.fold(Left.new, Right.new);
   }
 }
+
+/* Movie Search Use Case */
+final movieSearchUseCase = MovieSearchUseCase();
+
+class MovieSearchUseCase
+    extends UseCase<PaginatedResult<Movie>, SearchMovieParams> {
+  @override
+  Future<Either<PaginatedResult<Movie>, ErrorResponse>> call(
+    SearchMovieParams params,
+  ) async {
+    final res = await movieRepository.searchForMovie(params);
+    return res.fold(Left.new, Right.new);
+  }
+}
