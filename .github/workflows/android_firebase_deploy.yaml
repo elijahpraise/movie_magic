@@ -31,9 +31,11 @@ jobs:
       - name: Create env.json file
         run: |
           cat << EOF > env.json
-          tmbd_base_url=${{ secrets.TMBD_BASE_URL }}
-          tmbd_access_token=${{ secrets.TMBD_ACCESS_TOKEN }}
-          tmbd_api_key=${{ secrets.TMBD_API_KEY }}
+          {
+          "tmbd_base_url":"${{ secrets.TMBD_BASE_URL }}",
+          "tmbd_access_token":"${{ secrets.TMBD_ACCESS_TOKEN }}",
+          "tmbd_api_key":"${{ secrets.TMBD_API_KEY }}"
+          }
           EOF
           echo "✅ Created env.json file"
 
